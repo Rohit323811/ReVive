@@ -12,6 +12,8 @@ interface NavState {
   object: DetectedObject
   confidence?: number
   previewUrl?: string
+  /** 'ai' when Grok analyzed the photo, 'demo' for demo tiles or fallback */
+  source?: 'ai' | 'demo'
 }
 
 const fadeUp = (delay = 0) => ({
@@ -87,7 +89,11 @@ export default function Results() {
                 : 'Hard to upcycle — recycling or disposal may be the better call.'}
         </div>
         <p className={s.hint}>
-          Identified with {state?.confidence ?? 96}% confidence{state?.previewUrl ? ' · from your photo' : ' · demo object'}
+          {state?.source === 'ai'
+            ? `Identified with ${state?.confidence ?? 96}% confidence · Grok vision`
+            : state?.previewUrl
+              ? 'Demo result — the AI couldn\u2019t analyze your photo just now. Please try again.'
+              : `Demo object · identified with ${state?.confidence ?? 96}% confidence`}
         </p>
       </motion.section>
 
