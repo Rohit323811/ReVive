@@ -1,0 +1,134 @@
+/* Project detail */
+
+.proj-wrap {
+  padding-top: 16px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.proj-hero {
+  padding: 22px;
+  text-align: center;
+}
+
+.proj-hero .obj-line {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-3);
+}
+
+.proj-hero h1 {
+  margin-top: 8px;
+  font-size: 26px;
+}
+
+.proj-hero .blurb {
+  margin-top: 8px;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.meta {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.meta .chip {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+}
+
+.meta .chip.brand {
+  background: rgb(16 185 129 / 0.12);
+  border-color: rgb(16 185 129 / 0.3);
+  color: var(--brand-300);
+}
+
+[data-theme='light'] .meta .chip.brand {
+  color: var(--brand-700);
+}
+
+.section-title {
+  margin: 26px 0 12px;
+  font-size: 18px;
+}
+
+.mat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mat-card {
+  padding: 14px 16px;
+}
+
+.mat-card h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-3);
+}
+
+.mat-card ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: var(--text-2);
+  font-size: 13.5px;
+  line-height: 1.75;
+}
+
+@media (max-width: 520px) {
+  .mat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tip {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  background: rgb(245 158 11 / 0.1);
+  border: 1px solid rgb(245 158 11 / 0.35);
+  color: var(--amber);
+  font-size: 13.5px;
+  line-height: 1.6;
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+}
+
+.tip svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.proj-cta {
+  margin-top: 24px;
+  display: flex;
+  gap: 10px;
+}
+
+.proj-cta .grow {
+  flex: 1;
+}
+
+.done-note {
+  margin-top: 12px;
+  text-align: center;
+  color: var(--brand-400);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+[data-theme='light'] .done-note {
+  color: var(--brand-700);
+}

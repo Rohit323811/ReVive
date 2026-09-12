@@ -1,0 +1,26 @@
+# ── Dependencies ─────────────────────────────────────────────────────────────
+node_modules
+
+# ── Build output & caches ────────────────────────────────────────────────────
+dist
+.vercel
+.freebuff
+coverage
+
+# ── Environment files — NEVER commit secrets ─────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+
+# ── Keys & certs (never commit) ──────────────────────────────────────────────
+*.pem
+*.key
+
+# ── OS / editor / logs ───────────────────────────────────────────────────────
+*.local
+.DS_Store
+Thumbs.db
+npm-install.log
+dev-server.log

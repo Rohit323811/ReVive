@@ -1,0 +1,144 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.stat-card {
+  padding: 18px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.stat-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+}
+
+.stat-icon.green {
+  background: rgb(16 185 129 / 0.13);
+  color: var(--brand-300);
+}
+
+.stat-icon.blue {
+  background: rgb(96 165 250 / 0.13);
+  color: #7db8f8;
+}
+
+.stat-icon.gold {
+  background: rgb(245 158 11 / 0.13);
+  color: var(--amber);
+}
+
+.stat-icon.orange {
+  background: rgb(251 146 60 / 0.13);
+  color: #fb923c;
+}
+
+[data-theme='light'] .stat-icon.green {
+  color: var(--brand-700);
+}
+
+[data-theme='light'] .stat-icon.blue {
+  color: #2563eb;
+}
+
+[data-theme='light'] .stat-icon.gold {
+  color: #b45309;
+}
+
+[data-theme='light'] .stat-icon.orange {
+  color: #c2410c;
+}
+
+.val {
+  font-family: 'Sora', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.val-unit {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-3);
+  margin-left: 5px;
+  letter-spacing: 0;
+}
+
+.lab {
+  font-size: 12.5px;
+  color: var(--text-2);
+  font-weight: 600;
+}
+
+.breakdown {
+  margin-top: 14px;
+  padding: 18px;
+}
+
+.bd-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+  margin-bottom: 14px;
+}
+
+.bd-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 34px;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+}
+
+.bd-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bd-bar-track {
+  height: 8px;
+  border-radius: var(--r-full);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.bd-bar {
+  height: 100%;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--brand-600), var(--brand-400));
+}
+
+.bd-count {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--text-3);
+  text-align: right;
+}
+
+.footer-note {
+  margin-top: 16px;
+  font-size: 12.5px;
+  color: var(--text-3);
+  line-height: 1.6;
+  text-align: center;
+}
+
+@media (max-width: 420px) {
+  .bd-row {
+    grid-template-columns: 104px 1fr 30px;
+  }
+}
