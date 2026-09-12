@@ -111,6 +111,18 @@ export function grokProxyPlugin(): Plugin {
               return
             }
 
+            // Same guards as the Vercel Edge Function (api/analyze.ts) so dev
+            // and production behave identically.
+            const type = (mimeType ?? 'image/jpeg').toLowerCase()
+            if (type !== 'image/jpeg' && type !== 'image/jpg' && type !== 'image/png') {
+              json(res, 415, { error: 'Unsupported image format. Use JPG or PNG.' })
+              return
+            }
+            if (imageBase64.length > 16 * 1024 * 1024) {
+              json(res, 413, { error: 'Image too large after encoding' })
+              return
+            }
+
             try {
               const upstream = await fetch(XAI_URL, {
                 method: 'POST',
@@ -131,7 +143,7 @@ export function grokProxyPlugin(): Plugin {
                         {
                           type: 'image_url',
                           image_url: {
-                            url: `data:${mimeType};base64,${imageBase64}`,
+                            url: `data:${type};base64,${imageBase64}`,
                           },
                         },
                         { type: 'text', text: 'Identify this object and return the JSON.' },
