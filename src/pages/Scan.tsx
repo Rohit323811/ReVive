@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Camera, Check, ImagePlus, ScanLine } from 'lucide-react'
+import { AlertTriangle, Camera, Check, ImagePlus, ScanLine, X } from 'lucide-react'
 import { OBJECTS, type DetectedObject } from '../data/objects'
 import { ANALYSIS_STAGES } from '../lib/stages'
 import { recognize, type RecognitionResult } from '../lib/analyze'
@@ -10,12 +10,33 @@ import s from './Scan.module.css'
 interface Analyzing {
   fileName: string
   previewUrl?: string
+  /** True when the user uploaded/took a photo (vs a demo tile). */
+  hadFile: boolean
   /** Resolves to the AI (or fallback) result; never rejects. */
   result: Promise<RecognitionResult>
 }
 
 /** Minimum staged-animation window; real AI may take longer and that's fine. */
 const MIN_ANALYSIS_MS = 2000
+
+const FALLBACK_KEY = 'revive-fallback-notice'
+
+function setFallbackNotice(fileName: string | null): void {
+  try {
+    if (fileName) sessionStorage.setItem(FALLBACK_KEY, fileName)
+    else sessionStorage.removeItem(FALLBACK_KEY)
+  } catch {
+    /* private mode */
+  }
+}
+
+function getFallbackNotice(): string | null {
+  try {
+    return sessionStorage.getItem(FALLBACK_KEY)
+  } catch {
+    return null
+  }
+}
 
 export default function Scan() {
   const navigate = useNavigate()
@@ -24,6 +45,7 @@ export default function Scan() {
   const [drag, setDrag] = useState(false)
   const [analyzing, setAnalyzing] = useState<Analyzing | null>(null)
   const [stage, setStage] = useState(0)
+  const [fallback, setFallback] = useState<string | null>(() => getFallbackNotice())
 
   const startAnalysis = useCallback(
     (fileName: string, previewUrl: string | undefined, file: File | null) => {
@@ -31,6 +53,7 @@ export default function Scan() {
       setAnalyzing({
         fileName,
         previewUrl,
+        hadFile: file !== null,
         result: recognize({ file, fileName }),
       })
     },
@@ -54,6 +77,10 @@ export default function Scan() {
 
     void Promise.all([analyzing.result, minWindow]).then(([result]) => {
       if (cancelled) return
+      // Remember fallbacks of real photo uploads so Scan can show an honest
+      // retry banner when the user comes back. A successful AI scan clears it.
+      if (analyzing.hadFile && result.source === 'demo') setFallbackNotice(analyzing.fileName)
+      else if (result.source === 'ai') setFallbackNotice(null)
       navigate('/result', {
         state: {
           object: result.object,
@@ -85,6 +112,38 @@ export default function Scan() {
 
   return (
     <div className={s.scanWrap}>
+      <AnimatePresence>
+        {fallback && (
+          <motion.div
+            key="fallback-banner"
+            className={s.fallbackBanner}
+            role="status"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <AlertTriangle size={17} aria-hidden="true" />
+            <div className={s.fbText}>
+              <strong>The AI couldn’t analyze “{fallback}”.</strong>
+              <span>
+                You got a demo result instead — it may not match your photo. This usually fixes
+                itself in a minute, so please scan again.
+              </span>
+            </div>
+            <button
+              className={s.fbDismiss}
+              onClick={() => {
+                setFallbackNotice(null)
+                setFallback(null)
+              }}
+              aria-label="Dismiss notice"
+            >
+              <X size={15} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="page-head">
         <h1>Scan an object</h1>
         <p className="sub">
